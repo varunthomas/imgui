@@ -2454,12 +2454,12 @@ struct ImGuiMultiSelectIO
     //                          // BEGIN         / LOOP          / END
     bool    RequestClear;       //  ms:w, app:r  /               /  ms:w, app:r  // 1. Request user to clear selection (processed by app code)
     bool    RequestSelectAll;   //  ms:w, app:r  /               /  ms:w, app:r  // 2. Request user to select all (processed by app code)
-    bool    RequestSetRange;    //               /               /  ms:w, app:r  // 3. Request user to alter selection in the [RangeSrcItem..RangeDstItem] range using RangeValue. In practice, only EndMultiSelect() request this, app code can read after BeginMultiSelect() and it will always be false.
+    bool    RequestSetRange;    //               /               /  ms:w, app:r  // 3. Request user to select/unselect [RangeSrcItem..RangeDstItem] items (based on RangeSelected). In practice, only EndMultiSelect() request this, app code can read after BeginMultiSelect() and it will always be false.
     void*   RangeSrcItem;       //  ms:w         /        app:r  /  ms:w, app:r  // Begin: Last known SetNextItemSelectionData() value for RangeSrcItem value. End: parameter from RequestSetRange request.
     void*   RangeDstItem;       //               /               /  ms:w, app:r  // End: parameter from RequestSetRange request.
     ImS8    RangeDirection;     //               /               /  ms:w, app:r  // End: parameter from RequestSetRange request. +1 if RangeSrcItem came before RangeDstItem, -1 otherwise. Available as an indicator in case you cannot infer order from the void* values. If your void* values are storing indices you will never need this.
-    bool    RangeValue;         //               /               /  ms:w, app:r  // End: parameter from RequestSetRange request. true = Select Range, false = Unselect Range.
-    bool    RangeSrcPassedBy;   //               /  ms:rw app:w  /  ms:r         // (If using a clipper) Need to be set by user if RangeSrcItem was part of the clipped set before submitting the visible items. Ignore if not clipping.
+    bool    RangeSelected;      //               /               /  ms:w, app:r  // End: parameter from RequestSetRange request. true = Select Range, false = Unselect Range.
+    bool    RangeSrcPassedBy;   //               /  ms:rw app:w  /  ms:r         // (If using clipper) Need to be set by user if RangeSrcItem was part of the clipped set before submitting the visible items. Ignore if not clipping.
 
     ImGuiMultiSelectIO()    { Clear(); }
     void Clear()            { memset(this, 0, sizeof(*this)); }
